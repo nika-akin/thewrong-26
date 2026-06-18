@@ -7,7 +7,7 @@
 let terrain = [];
 let glitchLayers = [];
 let noiseOffset = 0;
-let deterioration = 0;        // 0 = pristine, 1 = total decay
+let deterioration = 0.5;        // 0 = pristine, 1 = total decay
 let midiEvents = [];
 let scanlines = [];
 let deadPixels = [];
