@@ -10,7 +10,7 @@ const AudioEngine = {
       onload: () => console.log("Samples loaded")
     }).toDestination();
 
-    // Example: generative loop (replaces this with his algorithm)
+    // Example: generative loop (replaces this)
     Tone.Transport.scheduleRepeat((time) => {
       const note = Math.floor(Math.random() * 50) + 30; // random MIDI note
       const vel = Math.random() * 0.5 + 0.5;
