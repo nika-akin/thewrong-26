@@ -1,18 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Your The Wrong Submission</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Wrong 2026 — Deteriorating Landscape</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   <style>
     body { margin: 0; overflow: hidden; background: black; }
-    #start { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-             color: white; font-family: sans-serif; cursor: pointer; z-index: 10; }
+    #start {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      color: #ff0040; font-family: 'Courier New', monospace; font-size: 14px;
+      cursor: pointer; z-index: 10; padding: 20px 40px;
+      border: 1px solid #ff0040; letter-spacing: 2px;
+    }
+    #start:hover { background: rgba(255,0,64,0.1); }
   </style>
 </head>
 <body>
-  <div id="start">CLICK TO START</div>
+  <div id="start">[ CLICK TO INITIALIZE ]</div>
   <script src="audio.js"></script>
   <script src="sketch.js"></script>
 </body>

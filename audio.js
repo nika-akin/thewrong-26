@@ -1,23 +1,41 @@
-//  generative audio engine
 const AudioEngine = {
   sampler: null,
   isPlaying: false,
 
   init() {
     this.sampler = new Tone.Sampler({
-      urls: { C2: "samples/contrabass-C2.wav", C4: "samples/piccolo-C4.wav" },
-      baseUrl: "./",
+      urls: {
+        C2: "samples/contrabass-C2.wav",
+        C4: "samples/piccolo-C4.wav"
+      },
+      baseUrl: "samples/",
       onload: () => console.log("Samples loaded")
     }).toDestination();
 
-    // Example: generative loop (replaces this)
+    // === REPLACE THIS LOOP WITH  ALGORITHM ===
     Tone.Transport.scheduleRepeat((time) => {
-      const note = Math.floor(Math.random() * 50) + 30; // random MIDI note
-      const vel = Math.random() * 0.5 + 0.5;
-      this.sampler.triggerAttackRelease(Tone.Frequency(note, "midi"), "8n", time, vel);
+      const note = Math.floor(random(30, 90));
+      const vel = random(0.3, 1.0);
+      const duration = random(["8n", "4n", "2n"]);
       
-      // Dispatch to visuals
-      if (window.onMidiEvent) window.onMidiEvent({ note, velocity: vel * 127, time });
+      this.sampler.triggerAttackRelease(
+        Tone.Frequency(note, "midi").toNote(),
+        duration,
+        time,
+        vel
+      );
+      
+      // Dispatch to visuals — this line must stay
+      if (window.onMidiEvent) {
+        Tone.Draw.schedule(() => {
+          window.onMidiEvent({ 
+            note, 
+            velocity: Math.round(vel * 127),
+            x: map(note, 20, 100, 0, window.innerWidth),
+            y: random(window.innerHeight * 0.3, window.innerHeight * 0.8)
+          });
+        }, time);
+      }
     }, "4n");
   },
 
@@ -31,5 +49,4 @@ const AudioEngine = {
   }
 };
 
-// Click to start (browsers require user gesture for audio)
 document.getElementById('start').addEventListener('click', () => AudioEngine.start());
