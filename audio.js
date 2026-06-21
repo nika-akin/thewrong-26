@@ -19,11 +19,16 @@ const AudioEngine = {
     await Tone.start();
     console.log('AudioContext started:', Tone.context.state);
 
+    // 1b. Create effects
+    this.reverb = new Tone.Reverb({ decay: 4, wet: 0.4 });
+    this.delay  = new Tone.FeedbackDelay("8n", 0.35);
+    //this.filter = new Tone.Filter(2000, "lowpass");
+
     // 2. Create the sampler
     this.sampler = new Tone.Sampler({
       urls: {
         C2: "contrabass-C2.wav",
-        C4: "piccolo-C4.wav"
+        //C4: "piccolo-C4.wav",
       },
       baseUrl: "samples/",
       onload: () => {
@@ -35,7 +40,7 @@ const AudioEngine = {
         console.error('Sample load error:', err);
         btn.textContent = '[ ERROR: SAMPLES NOT FOUND ]';
       }
-    }).toDestination();
+    }).chain(this.delay, this.reverb, Tone.Destination); // signal flows left to right
 
     // 3. Optional: Add an analyser for spectral sync
     this.analyser = new Tone.Analyser("fft", 1024);
@@ -52,53 +57,55 @@ const AudioEngine = {
     }, 100);
   },
 
-  _beginPlayback() {
-    if (!this.isLoaded || this.isPlaying) return;
+_beginPlayback() {
+  if (!this.isLoaded || this.isPlaying) return;
+  const btn = document.getElementById('start');
+  btn.style.display = 'none';
 
-    const btn = document.getElementById('start');
-    btn.style.display = 'none';
+  // Mirrors Python: random.uniform(0.02, 1.5) ** 2
+  // Range ~0.0004s–2.25s, skewed heavily toward short gaps
+  const future = () => {
+    const r = Math.random() * (1.5 - 0.02) + 0.02;
+    return r * r;
+  };
 
-    // === YOUR FRIEND'S GENERATIVE ALGORITHM GOES HERE ===
-    // Replace this placeholder loop with his actual MIDI generation logic.
-    // The key rule: every note must call window.onMidiEvent({note, velocity, x, y})
+  const scheduleNext = (time) => {
+    if (!this.isPlaying || !this.sampler || !this.sampler.loaded) return;
 
-    Tone.Transport.scheduleRepeat((time) => {
-      // Only generate if sampler is ready
-      if (!this.sampler || !this.sampler.loaded) return;
+    const note = Math.floor(Math.random() * 120) + 5;
+    const vel  = Math.random() * 0.8 + 0.2;
+    const duration = (Math.random() * 10.0 + 2.0); // 0.05s – 1.0s
 
-      const note = Math.floor(Math.random() * 60) + 30;  // MIDI 30-90
-      const vel = Math.random() * 0.7 + 0.3;             // 0.3 - 1.0
-      const duration = Math.random() > 0.5 ? "8n" : "4n";
+    this.sampler.triggerAttackRelease(
+      Tone.Frequency(note, "midi").toNote(),
+      duration,
+      time,
+      vel
+    );
 
-      // Trigger the sound
-      this.sampler.triggerAttackRelease(
-        Tone.Frequency(note, "midi").toNote(),
-        duration,
-        time,
-        vel
-      );
+    Tone.Draw.schedule(() => {
+      if (typeof window.onMidiEvent === 'function') {
+        window.onMidiEvent({
+          note:     note,
+          velocity: Math.round(vel * 127),
+          x: map(note, 20, 100, 0, window.innerWidth),
+          y: Math.random() * window.innerHeight * 0.5 + window.innerHeight * 0.25
+        });
+      }
+    }, time);
 
-      // Send to visuals — synchronized via Tone.Draw
-      Tone.Draw.schedule(() => {
-        if (typeof window.onMidiEvent === 'function') {
-          window.onMidiEvent({
-            note: note,
-            velocity: Math.round(vel * 127),
-            x: map(note, 20, 100, 0, window.innerWidth),
-            y: Math.random() * window.innerHeight * 0.5 + window.innerHeight * 0.25
-          });
-        }
-      }, time);
+    // Each note schedules the next — mirrors the Python `target_time = future()` line
+    Tone.Transport.scheduleOnce(scheduleNext, "+" + future());
+  };
 
-    }, "4n");  // Every quarter note — adjust to your friend's tempo
+  // Kick off the chain immediately
+  Tone.Transport.scheduleOnce(scheduleNext, "+0");
 
-    // Start transport
-    Tone.Transport.bpm.value = 90;  // Adjust tempo here
-    Tone.Transport.start();
-    this.isPlaying = true;
-
-    console.log('Playback started. BPM:', Tone.Transport.bpm.value);
-  },
+  //Tone.Transport.bpm.value = 50;
+  Tone.Transport.start();
+  this.isPlaying = true;
+  console.log('Playback started. BPM:', Tone.Transport.bpm.value);
+},
 
   // Call this from sketch.js if you want spectral data
   getFFT() {
