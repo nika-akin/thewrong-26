@@ -192,6 +192,7 @@ _beginPlayback() {
         window.onMidiEvent({
           note:     note,
           velocity: Math.round(vel * 127),
+          duration: duration,
           x: map(note, 20, 100, 0, window.innerWidth),
           y: Math.random() * window.innerHeight * 0.5 + window.innerHeight * 0.25
         });
