@@ -4,10 +4,63 @@
 // ============================================================
 
 const SAMPLE_DEFS = {
-  "contrabass-C2.wav": "C2",
-  "piccolo-C4.wav": "C4",
-  // ...
+  // test files
+  /*
+  "samples/test/contrabass-C2.wav": "C2",
+  "samples/test/piccolo-C4.wav": "C4",
+  //*/
+
+  ///*
+  "samples/mydesk/Guitar/git-f2-smooth.wav": "F2",
+  "samples/mydesk/Guitar/Guitar-F2-5th-Hard.wav": "F2",
+  "samples/mydesk/Guitar/Guitar-F3-OctaveBelow.wav": "F3",
+  "samples/mydesk/Guitar/Guitar-F3-OctaveBelow-NoAttack.wav": "F3",
+  //*/
+  
+  ///*
+  "samples/mydesk/Voice/Voice1.wav": "A4",
+  "samples/mydesk/Voice/Voice3.wav": "A4",
+  "samples/mydesk/Voice/Voice4.wav": "A3",
+  "samples/mydesk/Voice/Voice7.wav": "A3",
+  //*/
+  
+  ///*
+  "samples/mydesk/Rings/Ring1.wav": "C#6",
+  "samples/mydesk/Rings/Ring2.wav": "C#6",
+  "samples/mydesk/Rings/Ring3.wav": "C#6",
+  "samples/mydesk/Rings/Ring4.wav": "C#6",
+  "samples/mydesk/Rings/Ring5.wav": "C#6",
+  "samples/mydesk/Rings/Ring6.wav": "C#6",
+  //*/
+  
+  ///*
+  "samples/mydesk/Perc/BD-Git-Fist.wav": "C#3",
+  "samples/mydesk/Perc/BD-Mic-dumb.wav": "C#3",
+  "samples/mydesk/Perc/BD-Mic-hitty.wav": "C#3",
+  "samples/mydesk/Perc/BD-Quittung.wav": "C#3",
+  "samples/mydesk/Perc/Click-Spoon1.wav": "C#7",
+  "samples/mydesk/Perc/Click-Spoon2.wav": "C#7",
+  "samples/mydesk/Perc/Click-Spoon3.wav": "C#7",
+  "samples/mydesk/Perc/SN-Guitar-Clap2.wav": "C#4",
+  "samples/mydesk/Perc/SN-Guitar-Clap.wav": "C#4",
+  "samples/mydesk/Perc/SN-Quittung-Hard.wav": "C#4",
+  "samples/mydesk/Perc/SN-Quittung-Soft.wav": "C#4",
+  //*/
 };
+
+const TWEAKS = [
+  { label: "delay time",         apply: e => e.delay.delayTime.value       = Math.random() * 0.8 },
+  { label: "delay feedback",     apply: e => e.delay.feedback.value        = Math.random() * 0.5 },
+  { label: "panner",             apply: e => e.panner.pan.value            = Math.random() * 2 - 1 },
+  { label: "distortion amount",  apply: e => e.distortion.distortion.value = Math.random() },
+  { label: "distortion wet",     apply: e => e.distortion.wet.value        = Math.random() },
+  { label: "crusher bits",       apply: e => e.crusher.bits.value          = Math.floor(Math.random() * 7) + 1 },
+  { label: "crusher wet",        apply: e => e.crusher.wet.value           = Math.random() },
+  { label: "wah wet",            apply: e => e.wah.wet.value               = Math.random() },
+  { label: "wah q",              apply: e => e.wah.Q.value                 = Math.random() * 7 + 1 },
+  { label: "wah base frequency", apply: e => e.wah.baseFrequency.value     = Math.random() * 600 + 50 },
+  { label: "wah attack",         apply: e => e.wah.follower.attack         = Math.random() },
+];
 
 const AudioEngine = {
   sampler: null,
@@ -53,7 +106,7 @@ const AudioEngine = {
     // 3. Optional: Add an analyser for spectral sync
     // TODO connect to global output
     this.analyser = new Tone.Analyser("fft", 1024);
-    //this.sampler.connect(this.analyser);
+    this.masterReverb.connect(this.analyser);
 
     // 4. If samples are cached/fast, onload might fire before we reach here.
     // So also check after a tick:
@@ -81,13 +134,14 @@ _createSamplerEntry(note, file) {
     crusher.bits.value = 8
     crusher.wet.value = 0.0
     const wah = new Tone.AutoWah()
-    wah.wet.attack = 1.0
-    wah.wet.q = 6
+    wah.baseFrequency.value = 100
+    wah.Q.value = 2
+    wah.follower.attack = 0.3
     wah.wet.value = 0.0
 
     const sampler = new Tone.Sampler({
       urls: { [note]: file },
-      baseUrl: "samples/",
+      baseUrl: "",
       onload: () => resolve({ sampler, wah, distortion, crusher, delay, panner }),
       onerror: reject,
     }).chain(wah, distortion, crusher, delay, panner, this.masterReverb);
@@ -102,7 +156,7 @@ _beginPlayback() {
   // Mirrors Python: random.uniform(0.02, 1.5) ** 2
   // Range ~0.0004s–2.25s, skewed heavily toward short gaps
   const future = () => {
-    const r = Math.random() * (2.5 - 0.01) + 0.01;
+    const r = Math.random() * 2.5 + 0.001;
     return r * r;
   };
 
@@ -111,20 +165,27 @@ _beginPlayback() {
 
     const note = Math.floor(Math.random() * 120) + 5;
     const vel  = Math.random() * 0.8 + 0.2;
-    const duration = (Math.random() * 10.0 + 2.0); // 0.05s – 1.0s
+    const duration = (Math.random() * 10.0 + 2.0);
 
     // Pick a random sampler + its effects
     const entry = this.samplers[Math.floor(Math.random() * this.samplers.length)];
 
-    entry.sampler.triggerAttackRelease(
-      Tone.Frequency(note, "midi").toNote(),
-      duration,
-      time,
-      vel
-    );
+    try {
+      entry.sampler.triggerAttackRelease(
+        Tone.Frequency(note, "midi").toNote(),
+        duration,
+        time,
+        vel
+      );
+      console.log('Triggered note:', entry.name, note, duration, time, vel);
+    } catch (err) {
+      console.error('Problem with next note:', err);
+    }
 
-    // Mutate that sampler's own effects independently
-    //entry.delay.delayTime.value = Math.random();
+    // Mutate a random effects parameter
+    const tweak = TWEAKS[Math.floor(Math.random() * TWEAKS.length)];
+    tweak.apply(entry);
+    console.log(`${entry.name} -> ${tweak.label}`);
     
     Tone.Draw.schedule(() => {
       if (typeof window.onMidiEvent === 'function') {
