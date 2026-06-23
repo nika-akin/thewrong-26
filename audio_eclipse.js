@@ -4,19 +4,19 @@
 // ============================================================
 
 const SAMPLE_DEFS = {
-  "samples/mydesk/Perc/BD-Mic-hitty.wav": "C#2",
-  "samples/mydesk/Perc/BD-Quittung.wav": "D2",
-  "samples/mydesk/Guitar/git-f2-smooth.wav": "F2",
-  "samples/mydesk/Guitar/Guitar-F2-5th-Hard.wav": "F2",
-  "samples/mydesk/Voice/Voice7.wav": "A3",
-  "samples/mydesk/Voice/Voice4.wav": "A3",
-  "samples/mydesk/Rings/Ring3.wav": "C#5",
-  "samples/mydesk/Voice/Voice1.wav": "A4",
-  "samples/mydesk/Voice/Voice3.wav": "A4",
-  "samples/mydesk/Rings/Ring1.wav": "C#6",
-  "samples/mydesk/Rings/Ring2.wav": "C#6",
-  "samples/mydesk/Perc/Click-Spoon1.wav": "C#7",
-  "samples/mydesk/Perc/Click-Spoon2.wav": "C#7",
+  "samples/mydesk/Perc/BD-Mic-hitty_16.wav": "C#2",
+  "samples/mydesk/Perc/BD-Quittung_16.wav": "D2",
+  "samples/mydesk/Guitar/git-f2-smooth_16.wav": "F2",
+  "samples/mydesk/Guitar/Guitar-F2-5th-Hard_16.wav": "F2",
+  "samples/mydesk/Voice/Voice7_16.wav": "A3",
+  "samples/mydesk/Voice/Voice4_16.wav": "A3",
+  "samples/mydesk/Rings/Ring3_16.wav": "C#5",
+  "samples/mydesk/Voice/Voice1_16.wav": "A4",
+  "samples/mydesk/Voice/Voice3_16.wav": "A4",
+  "samples/mydesk/Rings/Ring1_16.wav": "C#6",
+  "samples/mydesk/Rings/Ring2_16.wav": "C#6",
+  "samples/mydesk/Perc/Click-Spoon1_16.wav": "C#7",
+  "samples/mydesk/Perc/Click-Spoon2_16.wav": "C#7",
 };
 
 const AudioEngine = {
