@@ -168,26 +168,27 @@ _beginPlayback() {
 
     var note = Math.floor(Math.random() * 60) + 31;
     const vel  = Math.random() * 0.5 + 0.4;
-    const duration = (Math.random() * 5 + 1);
+    var duration = (Math.random() * 3 + 1);
 
     // Pick a random sampler + its effects
     const entry = this.samplers[Math.floor(Math.random() * this.samplers.length)];
 
     try {
       if (this.eclipseState === 'TOTALITY') {
-        note = note + 30
+        note = note + 30;
         entry.chorus.wet.value = 0.5;
-        this.masterReverb.decay.value = 8
-        this.masterReverb.wet.value = 0.8
+        this.masterReverb.decay.value = 8;
+        this.masterReverb.wet.value = 0.8;
       } else if (this.eclipseState === 'TRANSITION') {
-        note = note - 30
+        note = note - 30;
         entry.chorus.wet.value = 1.0;
-        this.masterReverb.decay.value = 6
-        this.masterReverb.wet.value = 0.6
+        this.masterReverb.decay.value = 6;
+        this.masterReverb.wet.value = 0.6;
+        duration = (Math.random() * 5 + 7);
       } else {
         entry.chorus.wet.value = 0.0;
-        this.masterReverb.decay.value = 4
-        this.masterReverb.wet.value = 0.3
+        this.masterReverb.decay.value = 4;
+        this.masterReverb.wet.value = 0.3;
       }
 
       entry.sampler.triggerAttackRelease(
