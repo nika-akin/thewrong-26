@@ -4,47 +4,41 @@
 // ============================================================
 
 const SAMPLE_DEFS = {
-  // test files
-  /*
-  "samples/test/contrabass-C2.wav": "C2",
-  "samples/test/piccolo-C4.wav": "C4",
-  //*/
-
   ///*
-  "samples/mydesk/Guitar/git-f2-smooth.wav": "F2",
-  "samples/mydesk/Guitar/Guitar-F2-5th-Hard.wav": "F2",
-  "samples/mydesk/Guitar/Guitar-F3-OctaveBelow.wav": "F3",
-  //"samples/mydesk/Guitar/Guitar-F3-OctaveBelow-NoAttack.wav": "F3",
+  "samples/mydesk/Guitar/git-f2-smooth_16.wav": "F2",
+  "samples/mydesk/Guitar/Guitar-F2-5th-Hard_16.wav": "F2",
+  "samples/mydesk/Guitar/Guitar-F3-OctaveBelow_16.wav": "F3",
+  //"samples/mydesk/Guitar/Guitar-F3-OctaveBelow-NoAttack_16.wav": "F3",
   //*/
   
   ///*
-  "samples/mydesk/Voice/Voice1.wav": "A4",
-  "samples/mydesk/Voice/Voice3.wav": "A4",
-  //"samples/mydesk/Voice/Voice4.wav": "A3",
-  "samples/mydesk/Voice/Voice7.wav": "A3",
+  "samples/mydesk/Voice/Voice1_16.wav": "A4",
+  "samples/mydesk/Voice/Voice3_16.wav": "A4",
+  //"samples/mydesk/Voice/Voice4_16.wav": "A3",
+  "samples/mydesk/Voice/Voice7_16.wav": "A3",
   //*/
   
   ///*
-  "samples/mydesk/Rings/Ring1.wav": "C#6",
-  "samples/mydesk/Rings/Ring2.wav": "C#6",
-  "samples/mydesk/Rings/Ring3.wav": "C#5",
-  //"samples/mydesk/Rings/Ring4.wav": "C#6",
-  //"samples/mydesk/Rings/Ring5.wav": "C#6",
-  //"samples/mydesk/Rings/Ring6.wav": "C#6",
+  "samples/mydesk/Rings/Ring1_16.wav": "C#6",
+  "samples/mydesk/Rings/Ring2_16.wav": "C#6",
+  "samples/mydesk/Rings/Ring3_16.wav": "C#5",
+  //"samples/mydesk/Rings/Ring4_16.wav": "C#6",
+  //"samples/mydesk/Rings/Ring5_16.wav": "C#6",
+  //"samples/mydesk/Rings/Ring6_16.wav": "C#6",
   //*/
   
   ///*
-  //"samples/mydesk/Perc/BD-Git-Fist.wav": "C#3",
-  //"samples/mydesk/Perc/BD-Mic-dumb.wav": "C#3",
-  "samples/mydesk/Perc/BD-Mic-hitty.wav": "C#3",
-  "samples/mydesk/Perc/BD-Quittung.wav": "C#3",
-  "samples/mydesk/Perc/Click-Spoon1.wav": "C#7",
-  "samples/mydesk/Perc/Click-Spoon2.wav": "C#7",
-  //"samples/mydesk/Perc/Click-Spoon3.wav": "C#7",
-  //"samples/mydesk/Perc/SN-Guitar-Clap2.wav": "C#4",
-  "samples/mydesk/Perc/SN-Guitar-Clap.wav": "C#4",
-  "samples/mydesk/Perc/SN-Quittung-Hard.wav": "C#4",
-  //"samples/mydesk/Perc/SN-Quittung-Soft.wav": "C#4",
+  //"samples/mydesk/Perc/BD-Git-Fist_16.wav": "C#3",
+  //"samples/mydesk/Perc/BD-Mic-dumb_16.wav": "C#3",
+  "samples/mydesk/Perc/BD-Mic-hitty_16.wav": "C#3",
+  "samples/mydesk/Perc/BD-Quittung_16.wav": "C#3",
+  "samples/mydesk/Perc/Click-Spoon1_16.wav": "C#7",
+  "samples/mydesk/Perc/Click-Spoon2_16.wav": "C#7",
+  //"samples/mydesk/Perc/Click-Spoon3_16.wav": "C#7",
+  //"samples/mydesk/Perc/SN-Guitar-Clap2_16.wav": "C#4",
+  "samples/mydesk/Perc/SN-Guitar-Clap_16.wav": "C#4",
+  "samples/mydesk/Perc/SN-Quittung-Hard_16.wav": "C#4",
+  //"samples/mydesk/Perc/SN-Quittung-Soft_16.wav": "C#4",
   //*/
 };
 
@@ -67,9 +61,16 @@ const AudioEngine = {
   isPlaying: false,
   isLoaded: false,
   analyser: null,
+  isStarting: false,
 
   async start() {
-    if (this.isPlaying) return;
+    if (this.isPlaying || this.isStarting) return;
+    this.isStarting = true;
+
+    // Synchronously poke the AudioContext while still inside the gesture
+    if (Tone.context.state !== 'running') {
+      Tone.context.rawContext.resume(); // iOS unlock — don't await here
+    }
 
     const btn = document.getElementById('start');
     btn.textContent = '[ LOADING SAMPLES... ]';
@@ -91,7 +92,7 @@ const AudioEngine = {
       this.samplers = await Promise.all(
         Object.entries(SAMPLE_DEFS).map(async ([file, note]) => {
           const entry = await this._createSamplerEntry(note, file);
-          return { ...entry, name: file };  // name = "contrabass-C2.wav"
+          return { ...entry, name: file };  // name = "contrabass-C2_16.wav"
         })
       );
       
@@ -100,23 +101,12 @@ const AudioEngine = {
       this._beginPlayback();
     } catch (err) {
       console.error('Sample load error:', err);
-      btn.textContent = '[ ERROR WHEN CREATING SAMPLERS ]';
+      btn.textContent = '[ ERROR WITH AUDIO ]';
     }
 
     // 3. Optional: Add an analyser for spectral sync
-    // TODO connect to global output
     this.analyser = new Tone.Analyser("fft", 1024);
     this.masterReverb.connect(this.analyser);
-
-    // 4. If samples are cached/fast, onload might fire before we reach here.
-    // So also check after a tick:
-    //setTimeout(() => {
-    //  if (this.sampler.loaded && !this.isLoaded) {
-    //    this.isLoaded = true;
-    //    console.log('Samples already loaded (cached)');
-    //    this._beginPlayback();
-    //  }
-    //}, 100);
   },
   
 _createSamplerEntry(note, file) {
@@ -182,10 +172,14 @@ _beginPlayback() {
       console.error('Problem with next note:', err);
     }
 
-    // Mutate a random effects parameter
-    const tweak = TWEAKS[Math.floor(Math.random() * TWEAKS.length)];
-    tweak.apply(entry);
-    console.log(`${entry.name} -> ${tweak.label}`);
+    try {
+        // Mutate a random effects parameter
+        const tweak = TWEAKS[Math.floor(Math.random() * TWEAKS.length)];
+        tweak.apply(entry);
+        console.log(`${entry.name} -> ${tweak.label}`);
+    } catch (err) {
+      console.error('Problem while tweaking:', err);
+    }
     
     Tone.Draw.schedule(() => {
       if (typeof window.onMidiEvent === 'function') {
@@ -219,13 +213,11 @@ _beginPlayback() {
   }
 };
 
-// Click handler
-document.getElementById('start').addEventListener('click', () => {
-  AudioEngine.start();
-});
-
-// Also handle touch for mobile
-document.getElementById('start').addEventListener('touchstart', (e) => {
+const handleStart = (e) => {
   e.preventDefault();
   AudioEngine.start();
-});
+};
+
+const btn = document.getElementById('start');
+btn.addEventListener('click', handleStart);
+btn.addEventListener('touchstart', handleStart, { passive: false });
