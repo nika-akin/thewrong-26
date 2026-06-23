@@ -3,23 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Wrong 2026 — Deteriorating Landscape</title>
+  <title>ECLIPSE AS PHASE TRANSITION — Glitches Reveal Hidden Systems</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   <style>
     body { margin: 0; overflow: hidden; background: black; }
     #start {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      color: #ff0040; font-family: 'Courier New', monospace; font-size: 14px;
+      color: #ffaa00; font-family: 'Courier New', monospace; font-size: 14px;
       cursor: pointer; z-index: 10; padding: 20px 40px;
-      border: 1px solid #ff0040; letter-spacing: 2px;
+      border: 1px solid #ffaa00; letter-spacing: 2px;
+      background: rgba(0,0,0,0.8);
     }
-    #start:hover { background: rgba(255,0,64,0.1); }
+    #start:hover { background: rgba(255,170,0,0.15); }
+    .instructions {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+      color: #ffaa00; font-family: 'Courier New', monospace; font-size: 11px;
+      text-align: center; opacity: 0.6; pointer-events: none;
+    }
   </style>
 </head>
 <body>
-  <div id="start">[ CLICK TO INITIALIZE ]</div>
-  <script src="audio.js"></script>
-  <script src="sketch_FO.js"></script>
+  <div id="start">[ INITIALIZE ECLIPSE SYSTEM ]</div>
+  <div class="instructions">
+    GLITCHES REVEAL HIDDEN SYSTEMS<br>
+    [SPACE] ADVANCE PHASE | [D] DIAMOND RING BURST | MOUSE: REVEAL CORONA
+  </div>
+  <script src="audio_eclipse.js"></script>
+  <script src="sketch_eclipse.js"></script>
 </body>
 </html>
