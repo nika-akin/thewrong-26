@@ -1,5 +1,5 @@
 // ============================================================
-// ECLIPSE AS PHASE TRANSITION — Ars Electronica Entry
+// ECLIPSE AS PHASE TRANSITION — The Wrong Biennale Entry
 // "Glitches reveal hidden systems"
 // ============================================================
 
