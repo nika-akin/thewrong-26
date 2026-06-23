@@ -14,37 +14,37 @@ const SAMPLE_DEFS = {
   "samples/mydesk/Guitar/git-f2-smooth.wav": "F2",
   "samples/mydesk/Guitar/Guitar-F2-5th-Hard.wav": "F2",
   "samples/mydesk/Guitar/Guitar-F3-OctaveBelow.wav": "F3",
-  "samples/mydesk/Guitar/Guitar-F3-OctaveBelow-NoAttack.wav": "F3",
+  //"samples/mydesk/Guitar/Guitar-F3-OctaveBelow-NoAttack.wav": "F3",
   //*/
   
   ///*
   "samples/mydesk/Voice/Voice1.wav": "A4",
   "samples/mydesk/Voice/Voice3.wav": "A4",
-  "samples/mydesk/Voice/Voice4.wav": "A3",
+  //"samples/mydesk/Voice/Voice4.wav": "A3",
   "samples/mydesk/Voice/Voice7.wav": "A3",
   //*/
   
   ///*
   "samples/mydesk/Rings/Ring1.wav": "C#6",
   "samples/mydesk/Rings/Ring2.wav": "C#6",
-  "samples/mydesk/Rings/Ring3.wav": "C#6",
-  "samples/mydesk/Rings/Ring4.wav": "C#6",
-  "samples/mydesk/Rings/Ring5.wav": "C#6",
-  "samples/mydesk/Rings/Ring6.wav": "C#6",
+  "samples/mydesk/Rings/Ring3.wav": "C#5",
+  //"samples/mydesk/Rings/Ring4.wav": "C#6",
+  //"samples/mydesk/Rings/Ring5.wav": "C#6",
+  //"samples/mydesk/Rings/Ring6.wav": "C#6",
   //*/
   
   ///*
-  "samples/mydesk/Perc/BD-Git-Fist.wav": "C#3",
-  "samples/mydesk/Perc/BD-Mic-dumb.wav": "C#3",
+  //"samples/mydesk/Perc/BD-Git-Fist.wav": "C#3",
+  //"samples/mydesk/Perc/BD-Mic-dumb.wav": "C#3",
   "samples/mydesk/Perc/BD-Mic-hitty.wav": "C#3",
   "samples/mydesk/Perc/BD-Quittung.wav": "C#3",
   "samples/mydesk/Perc/Click-Spoon1.wav": "C#7",
   "samples/mydesk/Perc/Click-Spoon2.wav": "C#7",
-  "samples/mydesk/Perc/Click-Spoon3.wav": "C#7",
-  "samples/mydesk/Perc/SN-Guitar-Clap2.wav": "C#4",
+  //"samples/mydesk/Perc/Click-Spoon3.wav": "C#7",
+  //"samples/mydesk/Perc/SN-Guitar-Clap2.wav": "C#4",
   "samples/mydesk/Perc/SN-Guitar-Clap.wav": "C#4",
   "samples/mydesk/Perc/SN-Quittung-Hard.wav": "C#4",
-  "samples/mydesk/Perc/SN-Quittung-Soft.wav": "C#4",
+  //"samples/mydesk/Perc/SN-Quittung-Soft.wav": "C#4",
   //*/
 };
 
