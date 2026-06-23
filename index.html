@@ -3,33 +3,144 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ECLIPSE AS PHASE TRANSITION — Glitches Reveal Hidden Systems</title>
+  <title>REFRACTION THROUGH TOTALITY — Glitches Reveal Hidden Systems</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   <style>
-    body { margin: 0; overflow: hidden; background: black; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; color: #ffaa00; font-family: 'Courier New', monospace; overflow: hidden; }
+
+    .landing {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 40px; z-index: 100;
+      background: radial-gradient(ellipse at 50% 30%, rgba(255,170,0,0.08) 0%, #000 70%);
+      overflow-y: auto;
+      transition: opacity 1.2s ease, visibility 1.2s ease;
+    }
+    .landing.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .content { max-width: 900px; text-align: center; }
+
+    h1 { font-size: 24px; letter-spacing: 4px; margin-bottom: 10px; color: #ffcc00; }
+    .subtitle { font-size: 13px; opacity: 0.7; margin-bottom: 40px; letter-spacing: 2px; }
+
+    .eclipse-icon {
+      width: 60px; height: 60px; border: 2px solid rgba(255,170,0,0.4);
+      border-radius: 50%; margin: 0 auto 30px; position: relative;
+      animation: pulse 3s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
+    .eclipse-icon::after {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); width: 30px; height: 30px;
+      background: rgba(255,170,0,0.1); border-radius: 50%;
+    }
+
+    .section { margin-bottom: 30px; text-align: left; }
+    h2 { font-size: 14px; letter-spacing: 3px; margin-bottom: 15px; color: #ffcc00; border-bottom: 1px solid rgba(255,170,0,0.3); padding-bottom: 8px; }
+    p { font-size: 12px; opacity: 0.85; margin-bottom: 12px; line-height: 1.6; }
+
+    .phase-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0; }
+    .phase { text-align: center; padding: 12px 8px; border: 1px solid rgba(255,170,0,0.2); background: rgba(255,170,0,0.03); }
+    .phase-name { font-size: 10px; letter-spacing: 1px; margin-bottom: 6px; color: #ffcc00; }
+    .phase-desc { font-size: 10px; opacity: 0.7; }
+
+    .controls { background: rgba(255,170,0,0.05); border: 1px solid rgba(255,170,0,0.3); padding: 20px; margin: 20px 0; }
+    .controls h3 { font-size: 12px; letter-spacing: 2px; margin-bottom: 12px; color: #ffcc00; }
+    .control-item { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 11px; }
+    .control-key { color: #ffcc00; font-weight: bold; }
+
+    .enter-btn {
+      display: block; margin: 40px auto 20px; padding: 18px 50px;
+      background: transparent; border: 1px solid #ffaa00; color: #ffaa00;
+      font-family: 'Courier New', monospace; font-size: 12px;
+      letter-spacing: 3px; cursor: pointer; transition: all 0.3s;
+    }
+    .enter-btn:hover { background: rgba(255,170,0,0.15); border-color: #ffcc00; color: #ffcc00; }
+
+    .credits { text-align: center; font-size: 10px; opacity: 0.5; margin-top: 30px; }
+
+    #experience {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 1; display: none;
+    }
+    #experience.active { display: block; }
+
     #start {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
       color: #ffaa00; font-family: 'Courier New', monospace; font-size: 14px;
       cursor: pointer; z-index: 10; padding: 20px 40px;
       border: 1px solid #ffaa00; letter-spacing: 2px;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.8); display: none;
     }
+    #start.visible { display: block; }
     #start:hover { background: rgba(255,170,0,0.15); }
+
     .instructions {
       position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
       color: #ffaa00; font-family: 'Courier New', monospace; font-size: 11px;
-      text-align: center; opacity: 0.6; pointer-events: none;
+      text-align: center; opacity: 0.6; pointer-events: none; z-index: 10;
+      display: none;
     }
+    .instructions.visible { display: block; }
   </style>
 </head>
 <body>
-  <div id="start">[ INITIALIZE ECLIPSE SYSTEM ]</div>
-  <div class="instructions">
-    GLITCHES REVEAL HIDDEN SYSTEMS<br>
-    [SPACE] ADVANCE PHASE | [D] DIAMOND RING BURST | MOUSE: REVEAL CORONA
+  <div class="landing" id="landing">
+    <div class="content">
+      <div class="eclipse-icon"></div>
+      <h1>REFRACTION THROUGH TOTALITY</h1>
+      <p class="subtitle">Glitches Reveal Hidden Systems</p>
+
+      <div class="section">
+        <p>During a total solar eclipse, the impossible becomes visible: the Sun's corona burns at <strong>2 million Kelvin</strong> while the surface below glows at merely <strong>5,800 K</strong>. This inversion—the Coronal Heating Problem—has puzzled astrophysicists for nearly a century.</p>
+        <p>This work treats the eclipse not as occlusion, but as <strong>revelation</strong>. Just as the Moon's shadow reveals the hidden corona, glitches expose underlying architectures normally concealed by smooth operation.</p>
+      </div>
+
+      <div class="section">
+        <h2>PHASE TRANSITIONS</h2>
+        <div class="phase-grid">
+          <div class="phase"><div class="phase-name">PHOTOSPHERIC</div><div class="phase-desc">Baseline activity. Dry signals, clear attacks.</div></div>
+          <div class="phase"><div class="phase-name">TRANSITION</div><div class="phase-desc">Lensing begins. Pitch bends, spatial spread.</div></div>
+          <div class="phase"><div class="phase-name">TOTALITY</div><div class="phase-desc">Coronal revelation. Ethereal pitch shift, heavy chorus, extended reverb.</div></div>
+          <div class="phase"><div class="phase-name">RECOVERY</div><div class="phase-desc">Return transformed. Memory of the hidden persists.</div></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <h3>CONTROLS</h3>
+        <div class="control-item"><span class="control-key">[SPACE]</span><span>Advance phases</span></div>
+        <div class="control-item"><span class="control-key">[D]</span><span>Diamond Ring glitch burst</span></div>
+        <div class="control-item"><span class="control-key">MOUSE</span><span>Reveal corona during totality</span></div>
+      </div>
+
+      <button class="enter-btn" id="enterBtn">[ ENTER ECLIPSE ]</button>
+      <div class="credits">Ars Electronica 2026 — Digital Musics & Sound Art</div>
+    </div>
   </div>
+
+  <div id="experience">
+    <div id="start">[ INITIALIZE ECLIPSE SYSTEM ]</div>
+    <div class="instructions">
+      GLITCHES REVEAL HIDDEN SYSTEMS<br>
+      [SPACE] ADVANCE PHASE | [D] DIAMOND RING BURST | MOUSE: REVEAL CORONA
+    </div>
+  </div>
+
   <script src="audio_eclipse.js"></script>
   <script src="sketch_eclipse.js"></script>
+
+  <script>
+    document.getElementById('enterBtn').addEventListener('click', function() {
+      document.getElementById('landing').classList.add('hidden');
+      document.getElementById('experience').classList.add('active');
+      document.getElementById('start').classList.add('visible');
+      document.querySelector('.instructions').classList.add('visible');
+      if (typeof window._eclipseExperienceReady === 'function') {
+        window._eclipseExperienceReady();
+      }
+    });
+  </script>
 </body>
 </html>
