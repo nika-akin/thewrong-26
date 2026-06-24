@@ -3,6 +3,12 @@
 // For The Wrong 2026 — Tone.js
 // ============================================================
 
+Tone.setContext(new Tone.Context({
+  latencyHint: "playback", // largest buffer
+  lookAhead: 0.5,          // seconds of lookahead (default: 0.1)
+  updateInterval: 0.1      // how often the clock ticks (default: 0.05)
+}));
+
 const SAMPLE_DEFS = {
   ///*
   "samples/mydesk/Guitar/git-f2-smooth_16.wav": "F2",
@@ -86,12 +92,14 @@ const AudioEngine = {
     console.log('AudioContext started:', Tone.context.state);
 
     // 1. Global effects — created first so samplers can route into them
-    this.masterReverb  = new Tone.Reverb({ decay: 6, wet: 0.5 });
+    this.masterReverb  = new Tone.Reverb({ decay: 8, wet: 0.5 });
     await this.masterReverb.ready;
     this.masterLimiter = new Tone.Limiter(-0.1);  // -2dB, just catches peaks
 
     // Chain global bus → destination
-    this.masterReverb.chain(this.masterLimiter, Tone.Destination);
+    //this.masterReverb.chain(this.masterLimiter, Tone.Destination);
+    this.masterReverb.connect(this.masterLimiter);
+    this.masterLimiter.toDestination();
 
     try {
       // Promise.all waits for every sampler to finish loading
@@ -177,17 +185,14 @@ _beginPlayback() {
       if (this.eclipseState === 'TOTALITY') {
         note = note + 30;
         entry.chorus.wet.value = 0.5;
-        this.masterReverb.decay.value = 8;
         this.masterReverb.wet.value = 0.8;
       } else if (this.eclipseState === 'TRANSITION') {
         note = note - 30;
         entry.chorus.wet.value = 1.0;
-        this.masterReverb.decay.value = 6;
         this.masterReverb.wet.value = 0.6;
         duration = (Math.random() * 5 + 7);
       } else {
         entry.chorus.wet.value = 0.0;
-        this.masterReverb.decay.value = 4;
         this.masterReverb.wet.value = 0.3;
       }
 
@@ -241,12 +246,6 @@ _beginPlayback() {
     this.totalActive = (state === 'TOTALITY');
     
     if (!this.samplers || !this.masterReverb) return;
-    
-    if (state === 'TOTALITY') {
-      this.masterReverb.decay.value = 10;
-    } else {
-      this.masterReverb.decay.value = 6;
-    }
   },
 
   triggerDiamondRing() {
