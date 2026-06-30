@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="branding/eclipse-logo.svg" alt="REFRACTION THROUGH TOTALITY – Glitches Reveal Hidden Systems" width="480" />
+</p>
+
 REFRACTION THROUGH TOTALITY  
 Glitches Reveal Hidden Systems
 

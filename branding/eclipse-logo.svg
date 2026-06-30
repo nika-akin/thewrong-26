@@ -1,0 +1,58 @@
+<svg width="640" height="320" viewBox="0 0 640 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">REFRACTION THROUGH TOTALITY</title>
+  <desc id="desc">An abstract eclipse logo: a bright ring, an offset dark disk, and glitch lines that reveal hidden systems.</desc>
+
+  <!-- Background -->
+  <rect width="640" height="320" fill="black" />
+
+  <!-- Subtle radial glow -->
+  <defs>
+    <radialGradient id="corona" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#ffaa00" stop-opacity="0.15" />
+      <stop offset="40%" stop-color="#ffaa00" stop-opacity="0.03" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <circle cx="320" cy="160" r="150" fill="url(#corona)" />
+
+  <!-- Eclipse ring -->
+  <circle cx="320" cy="160" r="88" fill="none" stroke="#ffaa00" stroke-width="2.5" stroke-opacity="0.9" />
+
+  <!-- Occluding moon (offset disk) -->
+  <circle cx="305" cy="155" r="70" fill="#020202" />
+
+  <!-- Inner corona hints -->
+  <circle cx="320" cy="160" r="62" fill="none" stroke="#ffcc44" stroke-width="0.7" stroke-opacity="0.5" stroke-dasharray="3 10" />
+
+  <!-- Glitch lines: horizontal fragments slicing through the eclipse ring -->
+  <g stroke="#ffaa00" stroke-width="2">
+    <line x1="180" y1="130" x2="280" y2="130" stroke-opacity="0.9" />
+    <line x1="360" y1="130" x2="470" y2="130" stroke-opacity="0.6" />
+
+    <line x1="190" y1="160" x2="260" y2="160" stroke-opacity="0.5" />
+    <line x1="330" y1="160" x2="460" y2="160" stroke-opacity="0.85" />
+
+    <line x1="210" y1="190" x2="290" y2="190" stroke-opacity="0.7" />
+    <line x1="350" y1="190" x2="455" y2="190" stroke-opacity="0.4" />
+  </g>
+
+  <!-- Small glitch blocks -->
+  <g fill="#ffaa00">
+    <rect x="250" y="118" width="10" height="4" opacity="0.7" />
+    <rect x="420" y="126" width="14" height="4" opacity="0.55" />
+    <rect x="235" y="156" width="8" height="4" opacity="0.6" />
+    <rect x="390" y="164" width="11" height="4" opacity="0.8" />
+    <rect x="270" y="186" width="9" height="4" opacity="0.65" />
+    <rect x="430" y="194" width="12" height="4" opacity="0.5" />
+  </g>
+
+  <!-- Title text -->
+  <text x="50%" y="260" text-anchor="middle" fill="#ffcc44" font-family="'Courier New', monospace" font-size="14" letter-spacing="4">
+    REFRACTION THROUGH TOTALITY
+  </text>
+
+  <text x="50%" y="280" text-anchor="middle" fill="#ffaa00" font-family="'Courier New', monospace" font-size="10" letter-spacing="3" opacity="0.7">
+    GLITCHES REVEAL HIDDEN SYSTEMS
+  </text>
+</svg>
