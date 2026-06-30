@@ -17,13 +17,11 @@ During a total solar eclipse, the impossible becomes visible: the Sun’s corona
 
 The piece stages the eclipse as a sequence of phase transitions, where each transition exposes a different stratum of the sound and image engine. Errors are not failures but portals: bit-crushed edges, spectral smears, time-stretched phrasings and phase-shifted visual rings all make audible and visible the machinery that usually remains backgrounded.
 
-The work is conceived for **The Wrong 2026 — Digital Musics & Sound Art**, and is designed to be experienced in a browser as a self-contained micro-environment.
+The work is conceived for **The Wrong 2026 — Eclipse**, and is designed to be experienced in a browser as a self-contained micro-environment.
 
 ---
 
 ## Experience
-
-On launch, the visitor lands in a minimal textual interface: an eclipse icon pulses at the center, framed by a short exposition about the Coronal Heating Problem and a diagram of four phases. The interface announces itself as a system rather than a static page.
 
 Pressing **[ ENTER ECLIPSE ]** fades the text layer and activates the audiovisual surface. From here, the work unfolds as a performative navigation through four distinct states:
 
@@ -50,11 +48,6 @@ All interactions take place directly in the browser.
 - **[SPACE]** – Advance through eclipse phases (Photospheric → Transition → Totality → Recovery).  
 - **[D]** – Trigger a “Diamond Ring” glitch burst, a short, bright event at the edge of totality.  
 - **Mouse / touch** – During totality, move across the screen to reveal and disturb coronal textures; small positional changes nudge both spatialisation and glitch behaviour.
-
-The piece is designed to be both:
-
-- **Playable** by a single visitor discovering the controls intuitively.  
-- **Performable** by an operator who deliberately navigates phases and triggers events in response to an audience or context.
 
 ---
 
@@ -122,17 +115,4 @@ Because of browser autoplay policies, you may need to click `[ ENTER ECLIPSE ]` 
 
 ---
 
-## Exhibition Notes
 
-- **Duration**: Open-ended; the piece loops structurally but the path through phases can be continuously varied via performance.  
-- **Mode**: Single-screen, interactive; suitable for both individual headphones and small space loudspeaker presentation.  
-- **Ideal setup**: 1 laptop or dedicated machine, stable internet (if using the hosted version) or local server, stereo output, and a pointing device (mouse or trackpad).
-
-For installations, the work can be left in an attractor state on the landing screen, inviting visitors to press `[ ENTER ECLIPSE ]` and start their own traversal through the eclipse.
-
----
-
-## Credits
-
-Concept, sound, and code: Veronika Akın  
-Presented as part of **The Wrong 2026 – Digital Musics & Sound Art**.
